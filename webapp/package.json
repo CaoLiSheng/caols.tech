@@ -1,23 +1,27 @@
 {
   "name": "webapp",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "continuation of my caols.tech website",
+  "main": "",
   "scripts": {
     "dev": "node ./bin/dev.js",
     "ssr": "node ./bin/ssr.js",
     "test": "echo \"Warning: no test specified\" && exit 0"
   },
   "keywords": [],
-  "author": "",
+  "author": "CaoLS",
   "license": "ISC",
   "dependencies": {
+    "history": "^4.7.2",
     "lodash": "^4.17.10",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-router-dom": "^4.3.1"
+    "react-router-config": "^1.0.0-beta.4",
+    "react-router-dom": "^4.3.1",
+    "react-router-redux": "^4.0.8"
   },
   "devDependencies": {
+    "autoprefixer": "^9.0.1",
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
@@ -26,9 +30,11 @@
     "css-loader": "^1.0.0",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.9.2",
     "postcss-flexbugs-fixes": "^4.0.0",
     "postcss-loader": "^2.1.6",
     "react-dev-utils": "^5.0.1",
+    "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.16.1",
