@@ -23,7 +23,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, '../dev'),
-    filename: '[name].[chunkhash:8].js',
+    filename: '[name].[hash:8].js',
+    publicPath: '/',
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
@@ -125,7 +126,7 @@ module.exports = {
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
-              cacheDirectory: false,
+              cacheDirectory: true,
             },
           },
           // "postcss" loader applies autoprefixer to our CSS.
@@ -193,6 +194,7 @@ module.exports = {
       chunks: ['vendor', 'app'],
       filename: path.resolve(__dirname, '../dev/index.html'),
     }),
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
       'process.env.APP_ENV': JSON.stringify('development'),
