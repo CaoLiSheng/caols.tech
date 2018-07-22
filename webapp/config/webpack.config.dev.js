@@ -14,6 +14,7 @@ module.exports = {
   mode: 'development',
   entry: {
     vendor: [
+      path.resolve(__dirname, './polyfill.js'),
       'lodash',
       'react',
       'react-dom',

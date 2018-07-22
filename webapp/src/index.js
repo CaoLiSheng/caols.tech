@@ -1,6 +1,6 @@
 import React from 'react';
 import { hydrate, render } from 'react-dom';
-import App from './examples/ImageExample';
+import App from './examples/async.awaits';
 
 const clientRender = __SSR__ ? hydrate : render;
 
