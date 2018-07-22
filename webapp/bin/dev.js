@@ -1,3 +1,4 @@
+process.env.BABEL_ENV = 'development';
 
 const fs = require('fs');
 const path = require('path');
