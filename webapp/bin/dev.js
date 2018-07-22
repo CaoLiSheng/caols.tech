@@ -23,9 +23,10 @@ const HOST = '0.0.0.0';
 choosePort(HOST, 8080)
   .then(port => {
     if (port == null) {
-      // We have not found a port.
+      console.log('We have not found a port.');
       return;
     }
+
     const appName = require(appPackageJson).name;
     const urls = prepareUrls('http', HOST, port);
     const compiler = createCompiler(webpack, config, appName, urls, false);
@@ -39,8 +40,7 @@ choosePort(HOST, 8080)
       if (isInteractive) {
         clearConsole();
       }
-      console.log(chalk.cyan('Starting the development server...\n'));
-      // openBrowser(urls.localUrlForBrowser);
+      console.log('Starting the development server...\n');
     });
 
     ['SIGINT', 'SIGTERM'].forEach(function (sig) {
