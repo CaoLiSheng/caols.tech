@@ -1,6 +1,12 @@
-.image-example .a-image-container {
-  width: 300px;
-  height: 100px;
-  background-size: 100% 100%;
-  background-image: url('~images/online.jpg');
+.image-example {
+    img {
+        display: block;
+    }
+
+    .a-image-container {
+        width: 300px;
+        height: 100px;
+        background-size: 100% 100%;
+        background-image: url("~images/online.jpg");
+    }
 }

@@ -19,6 +19,8 @@ module.exports = {
       'react-dom',
       'react-router',
       'react-router-dom',
+      'react-router-config',
+      'react-router-redux'
     ],
     app: path.resolve(__dirname, '../src/index.js'),
   },
