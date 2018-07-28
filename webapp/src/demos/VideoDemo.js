@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react';
 
 import Video1 from 'assets/videos/Pexels Videos 1069804.mp4';
 import Video2 from 'assets/videos/Pexels Videos 1088376.mp4';
