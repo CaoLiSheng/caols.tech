@@ -4,9 +4,11 @@ import DragImg1 from 'images/folder-drag.png';
 import DragImg2 from 'images/japan_tower_tokyo_landmark.png';
 import './DragDemo.scss';
 
+/**
+ * Safari对此支持不是很好
+ */
 class DragDemo extends Component {
   onDragStart = (e) => {
-    console.log(e.target);
 
     const dt = e.dataTransfer;
     const img = e.target.cloneNode();
@@ -31,6 +33,9 @@ class DragDemo extends Component {
     console.log('e.clientX', e.clientX);
     console.log('e.clientY', e.clientY);
 
+    console.log('iframe.offsetLeft', this.iframe.offsetLeft);
+    console.log('iframe.offsetTop', this.iframe.offsetTop);
+
     console.log('mousePos.x', e.clientX - this.halfWidth);
     console.log('mousePos.y', e.clientY + this.halfHeight);
 
@@ -50,6 +55,7 @@ class DragDemo extends Component {
           <div className="sidebar">
             <div
               className="icon"
+              draggable="true"
               onDragStart={this.onDragStart}
               onDragEnd={this.onDragEnd}
             >
@@ -57,6 +63,7 @@ class DragDemo extends Component {
             </div>
             <div
               className="icon"
+              draggable="true"
               onDragStart={this.onDragStart}
               onDragEnd={this.onDragEnd}
             >
