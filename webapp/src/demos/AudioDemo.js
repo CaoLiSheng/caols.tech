@@ -14,6 +14,8 @@ class AudioDemo extends Component {
   constructor(props) {
     super(props);
 
+    this.audioCtx = new window.AudioContext();
+
     this.audioFiles = [
       { name: '过几日', src: Audio1 },
       { name: '妖扬-九九八十一', src: Audio2 },
@@ -30,7 +32,8 @@ class AudioDemo extends Component {
       playingRef: null,
     };
     this.counter = 0;
-    this.audioElements = [];
+    this.allElements = [];
+    this.availAudios = [];
     this.callbacks = [];
     this.playingNode = null;
 
@@ -72,14 +75,16 @@ class AudioDemo extends Component {
   }
 
   startAll = () => {
+    const self = this;
     this.setState({ disabled: true }, () => {
-      while (this.callbacks.length) {
-        this.play(this.callbacks.shift());
-      }
-      for (let i = 0; i < this.audioElements.length; i++) {
-        this.audioElements[i].play();
-      }
-    })
+      Promise.all(_.map(this.allElements, el => el.play()))
+        .then(() => {
+          _.forEach(this.allElements, node => node.pause());
+          while (this.callbacks.length) {
+            this.play(this.callbacks.shift());
+          }
+        });
+    });
   }
 
   nextAudio = () => {
@@ -89,19 +94,23 @@ class AudioDemo extends Component {
   add = (autoPlay) => {
     const next = this.nextAudio();
     const ref = `${next.name}-${++this.counter}`;
-    if (!this.audioElements.length) {
-      for (let i = 0; i < 5; i++) {
+    if (!this.availAudios.length) {
+      for (let i = 0; i < 3; i++) {
         const audio = new Audio();
-        this.audioElements.push(audio);
+        this.availAudios.push(audio);
+        this.allElements.push(audio);
       }
     }
-    const node = this.audioElements.shift();
+    const node = this.availAudios.shift();
+    const sourceNode = this.audioCtx.createMediaElementSource(node);
+    sourceNode.connect(this.audioCtx.destination);
     node.pause();
     node.src = next.src;
     this.setState((oldState) => {
       oldState.audioRefs[ref] = {
         data: next,
         node,
+        sourceNode,
       };
       return _.clone(oldState);
     }, () => { if (autoPlay) this.play(ref); });
@@ -125,12 +134,12 @@ class AudioDemo extends Component {
           .clone()
           .value()
       }),
-      () => this.audioElements.push(node)
+      () => this.availAudios.push(node)
     )
   }
 
   play = (ref) => {
-    alert(`play - ${ref}`);
+    console.log(`play - ${ref}`);
     const audio = this.state.audioRefs[ref];
     if (!audio) return;
 
