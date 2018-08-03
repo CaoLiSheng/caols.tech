@@ -16,6 +16,8 @@ class AudioDemo extends Component {
     super(props);
 
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    this.audioCtxCA = performance.now();
+    this.audioCtxReadyDur = 1000;
 
     this.audioFiles = [
       { name: '米津玄師 - 百鬼夜行', src: Audio0 },
@@ -76,6 +78,10 @@ class AudioDemo extends Component {
     }
   }
 
+  ready = () => {
+    return performance.now() - this.audioCtxCA >= this.audioCtxReadyDur;
+  }
+
   startAll = () => {
     this.audioCtx.resume();
     const self = this;
@@ -96,6 +102,11 @@ class AudioDemo extends Component {
   }
 
   add = (autoPlay) => {
+    if (!this.ready()) {
+      setTimeout(this.add, this.audioCtxReadyDur, autoPlay);
+      return;
+    }
+
     const next = this.nextAudio();
     const ref = `${next.name}-${++this.counter}`;
     if (!this.availAudios.length) {
