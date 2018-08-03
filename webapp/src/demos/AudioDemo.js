@@ -20,6 +20,7 @@ class AudioDemo extends Component {
     this.audioCtxReadyDur = 1000;
 
     this.audioFiles = [
+      { name: '线上文件', src: 'https://vcdn.veervr.tv/audio/f87c50b3d202407abde87cf18d4b47d5/index.mp3?sign=535a25f031820bcb0e422a81e0247a2b&t=5b7df900' },
       { name: '米津玄師 - 百鬼夜行', src: Audio0 },
       { name: '过几日', src: Audio1 },
       { name: '妖扬-九九八十一', src: Audio2 },
@@ -112,6 +113,10 @@ class AudioDemo extends Component {
     if (!this.availAudios.length) {
       for (let i = 0; i < 3; i++) {
         const audio = new Audio();
+        audio.muted = false;
+        audio.volume = 1.0;
+        audio.preload = 'auto';
+        audio.crossOrigin = 'anonymous';
         this.containerEl.appendChild(audio);
         this.availAudios.push(audio);
         this.allElements.push(audio);
@@ -124,6 +129,8 @@ class AudioDemo extends Component {
     sourceNode.connect(gainNode);
     gainNode.connect(this.audioCtx.destination);
     node.pause();
+    // const sep = next.src.includes('?') ? '&' : '?';
+    // node.src = `${next.src}${sep}refresh=${Date.now()}`;
     node.src = next.src;
     this.setState((oldState) => {
       oldState.audioRefs[ref] = {
@@ -165,6 +172,7 @@ class AudioDemo extends Component {
     const node = audio.node;
     node.play()
       .then(() => {
+        console.log('succ');
         if (this.playingNode) {
           this.playingNode.pause();
           this.playingNode.currentTime = 0;
@@ -172,9 +180,10 @@ class AudioDemo extends Component {
         this.playingNode = node;
         this.setState({ playingRef: ref });
       })
-      .catch(() =>
-        this.setState({ disabled: false }, () => this.callbacks.push(ref))
-      );
+      .catch(() => {
+        console.log('fail');
+        this.setState({ disabled: false }, () => this.callbacks.push(ref));
+      });
   }
 
   delayedPlay = (ref) => {
