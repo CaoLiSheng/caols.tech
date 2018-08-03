@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import AudioWorker from './AudioWorker.wjs';
 
+import Audio0 from 'assets/audios/米津玄師 - 百鬼夜行.mp3';
 import Audio1 from 'assets/audios/过几日.mp3';
 import Audio2 from 'assets/audios/妖扬-九九八十一.mp3';
 import Audio3 from 'assets/audios/玄觞 - 紫光.mp3';
@@ -14,9 +15,10 @@ class AudioDemo extends Component {
   constructor(props) {
     super(props);
 
-    this.audioCtx = new window.AudioContext();
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     this.audioFiles = [
+      { name: '米津玄師 - 百鬼夜行', src: Audio0 },
       { name: '过几日', src: Audio1 },
       { name: '妖扬-九九八十一', src: Audio2 },
       { name: '玄觞 - 紫光', src: Audio3 },
@@ -75,15 +77,17 @@ class AudioDemo extends Component {
   }
 
   startAll = () => {
+    this.audioCtx.resume();
     const self = this;
     this.setState({ disabled: true }, () => {
-      Promise.all(_.map(this.allElements, el => el.play()))
-        .then(() => {
-          _.forEach(this.allElements, node => node.pause());
-          while (this.callbacks.length) {
-            this.play(this.callbacks.shift());
-          }
-        });
+      _.forEach(this.elements, async el => {
+        const alreadyPlaying = el.currentTime !== 0;
+        await el.play();
+        if (!alreadyPlaying) el.pause();
+      });
+      while (this.callbacks.length) {
+        this.play(this.callbacks.shift());
+      }
     });
   }
 
@@ -97,13 +101,17 @@ class AudioDemo extends Component {
     if (!this.availAudios.length) {
       for (let i = 0; i < 3; i++) {
         const audio = new Audio();
+        this.containerEl.appendChild(audio);
         this.availAudios.push(audio);
         this.allElements.push(audio);
       }
     }
     const node = this.availAudios.shift();
     const sourceNode = this.audioCtx.createMediaElementSource(node);
-    sourceNode.connect(this.audioCtx.destination);
+    const gainNode = this.audioCtx.createGain();
+    gainNode.gain.value = 1.0;
+    sourceNode.connect(gainNode);
+    gainNode.connect(this.audioCtx.destination);
     node.pause();
     node.src = next.src;
     this.setState((oldState) => {
@@ -206,6 +214,7 @@ class AudioDemo extends Component {
             }
           </Dropdown.Menu>
         </Dropdown>
+        <div ref={node => this.containerEl = node} className="audios"></div>
       </div>
     );
   }
