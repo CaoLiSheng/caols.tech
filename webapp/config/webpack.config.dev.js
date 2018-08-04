@@ -28,7 +28,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dev'),
     filename: '[name].[hash:8].js',
-    publicPath: '/8089/',
+    // publicPath: '/8089/',
+    publicPath: '/',
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.

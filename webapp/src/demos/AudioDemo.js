@@ -19,6 +19,20 @@ class AudioDemo extends Component {
     this.audioCtxCA = performance.now();
     this.audioCtxReadyDur = 1000;
 
+    alert('demo sample rate 0 -> ' + this.audioCtx.sampleRate);
+    if (this.audioCtx.sampleRate !== 44100) {
+      const buffer = this.audioCtx.createBuffer(1, 1, 44100);
+      const dummy = this.audioCtx.createBufferSource();
+      dummy.buffer = buffer;
+      dummy.connect(this.audioCtx.destination);
+      dummy.start(0);
+      dummy.disconnect();
+      alert('demo sample rate 1 -> ' + this.audioCtx.sampleRate);
+      this.audioCtx.close();
+      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    alert('demo sample rate 2 -> ' + this.audioCtx.sampleRate);
+
     this.audioFiles = [
       { name: '线上文件', src: 'https://vcdn.veervr.tv/audio/f87c50b3d202407abde87cf18d4b47d5/index.mp3?sign=535a25f031820bcb0e422a81e0247a2b&t=5b7df900' },
       { name: '米津玄師 - 百鬼夜行', src: Audio0 },
@@ -128,6 +142,7 @@ class AudioDemo extends Component {
     gainNode.gain.value = 1.0;
     sourceNode.connect(gainNode);
     gainNode.connect(this.audioCtx.destination);
+    console.log(next.name, sourceNode, gainNode, this.audioCtx.destination);
     node.pause();
     // const sep = next.src.includes('?') ? '&' : '?';
     // node.src = `${next.src}${sep}refresh=${Date.now()}`;
