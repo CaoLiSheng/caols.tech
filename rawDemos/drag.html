@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <style>
+    #div1 {
+      width: 350px;
+      height: 70px;
+      padding: 10px;
+      border: 1px solid #aaaaaa;
+    }
+  </style>
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      const img = ev.target.cloneNode();
+      const halfWidth = img.width / 2;
+      const halfHeight = img.height / 2;
+      ev.dataTransfer.setDragImage(img, halfWidth, halfHeight);
+      // console.log(ev.target, halfWidth, halfHeight);
+      //ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      //var data = ev.dataTransfer.getData("text");
+      //ev.target.appendChild(document.getElementById(data));
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- <p>Drag the W3Schools image into the rectangle:</p>
+
+  <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+  <br>
+  <img id="drag1" src="https://www.w3schools.com/htmL/img_logo.gif" draggable="true" ondragstart="drag(event)"> -->
+
+  <div className="whole-drag-demo">
+    <div className="header" />
+    <div className="body">
+      <div className="sidebar">
+        <div className="icon" draggable="true" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
+          <img src={DragImg1} alt="dragable" role="represatation" />
+        </div>
+        <div className="icon" draggable="true" onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
+          <img src={DragImg2} alt="dragable" role="represatation" />
+        </div>
+      </div>
+      <div ref={(n)=> { this.iframe = n; }} className="iframe">
+        <iframe src="https://www.baidu.com" frameBorder="0" />
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
